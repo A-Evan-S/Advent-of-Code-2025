@@ -6,10 +6,10 @@ parse_rotation(RotationString, Rotation):-
     number_chars(Amount, AmountChars),
     (Direction == 'R' -> Rotation is Amount; Rotation is -Amount).
 
-count_zeros([], 0, Acc, Zeros):- Zeros is Acc + 1.
+count_zeros([], 0, Acc, Zeros):- succ(Acc, Zeros).
 count_zeros([], _, Acc, Acc).
 count_zeros([R|Rest], 0, Acc, Zeros):-
-    Acc1 is Acc + 1,
+    succ(Acc, Acc1),
     Position is mod(R, 100),
     count_zeros(Rest, Position, Acc1, Zeros).
 count_zeros([R|Rest], Position, Acc, Zeros):-
@@ -19,7 +19,7 @@ count_zeros([R|Rest], Position, Acc, Zeros):-
 expand([], []).
 expand([0|Rest], ExpandedRotations):- expand(Rest, ExpandedRotations).
 expand([R|Rest], ExpandedRotations):-
-    (R < 0 -> Term is -1 ; Term is 1 ),
+    (R < 0 -> Term is -1 ; Term is 1),
     R1 is R - Term,
     expand([R1|Rest], ExpandedRest),
     ExpandedRotations = [Term|ExpandedRest].
