@@ -2,10 +2,9 @@
 
 parse_rotation(RotationString, Rotation):-
     string_chars(RotationString, Chars),
-    Chars = [Direction|_],
-    sub_string(RotationString, 1, _, 0, AmountString),
-    number_string(Amount, AmountString),
-    (Direction == 'R' -> Rotation is Amount; Rotation is (-1) * Amount).
+    Chars = [Direction|AmountChars],
+    number_chars(Amount, AmountChars),
+    (Direction == 'R' -> Rotation is Amount; Rotation is -Amount).
 
 count_zeros([], 0, Acc, Zeros):- Zeros is Acc + 1.
 count_zeros([], _, Acc, Acc).
