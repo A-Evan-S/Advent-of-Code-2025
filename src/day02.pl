@@ -36,13 +36,13 @@ main:-
     maplist(parse_range, RangeStrings, Ranges),
 
     maplist(find_invalids(is_invalid_1), Ranges, Invalids),
-    flatten(Invalids, AllInvalids),
-    sum_list(AllInvalids, Result1),
+    maplist(sum_list, Invalids, InvalidSums),
+    sum_list(InvalidSums, Result1),
     write("Part 1: "), write(Result1), nl,
 
     maplist(find_invalids(is_invalid_2), Ranges, Invalids2),
-    flatten(Invalids2, AllInvalids2),
-    sum_list(AllInvalids2, Result2),
+    maplist(sum_list, Invalids2, InvalidSums2),
+    sum_list(InvalidSums2, Result2),
     write("Part 2: "), write(Result2), nl,
 
     halt.
