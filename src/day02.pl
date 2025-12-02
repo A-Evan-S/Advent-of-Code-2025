@@ -20,8 +20,7 @@ is_invalid_2(Num):-
     between(2, L, NumParts),
     0 is mod(L, NumParts),
     Before is div(L, NumParts),
-    After is L - Before,
-    sub_string(NumString, 0, Before, After, Part),
+    sub_string(NumString, 0, Before, _, Part),
     string_repeat(Part, NumString).
 
 string_repeat(_, "").
