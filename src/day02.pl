@@ -8,11 +8,8 @@ find_invalids(IsInvalid, [RangeStart, RangeEnd], Invalids):-
 
 is_invalid_1(Num):-
     number_string(Num, NumString),
-    string_length(NumString, L),
-    PartLength is div(L, 2),
-    sub_string(NumString, 0, PartLength, PartLength, Left),
-    sub_string(NumString, PartLength, PartLength, 0, Right),
-    Left == Right.
+    string_concat(Prefix, Suffix, NumString),
+    Prefix == Suffix.
 
 is_invalid_2(Num):-
     number_string(Num, NumString),
