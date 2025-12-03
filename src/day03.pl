@@ -1,20 +1,18 @@
 
 :- ['src/util.pl'].
 
-max_batteries(0, _, 0).
-max_batteries(N, Batteries, Joltage):-
+max_batteries(N, Batteries, Joltage):- max_batteries(N, Batteries, 0, Joltage).
+max_batteries(0, _, Acc, Acc).
+max_batteries(N, Batteries, Acc, Joltage):-
     length(Batteries, L),
     FrontLength is L - N + 1,
-    length(Front, FrontLength),
-    append(Front, _, Batteries),
+    take(FrontLength, Batteries, Front),
     max_list(Front, FrontDigit),
     nth1(FrontDigitIndex, Front, FrontDigit),
-    RestLength is L - FrontDigitIndex,
-    length(Rest, RestLength),
-    append(_, Rest, Batteries),
+    drop(FrontDigitIndex, Batteries, Rest),
     succ(N1, N),
-    max_batteries(N1, Rest, JoltageRest),
-    Joltage is 10 ^ (N - 1) * FrontDigit + JoltageRest.
+    Acc1 is Acc + 10 ^ N1 * FrontDigit,
+    max_batteries(N1, Rest, Acc1, Joltage).
 
 string_to_digits(String, Digits):-
     string_chars(String, DigitChars),
