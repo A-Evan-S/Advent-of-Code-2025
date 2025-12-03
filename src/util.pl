@@ -7,3 +7,13 @@ read_stream_to_strings(InputStream, Input):-
     read_line_to_string(InputStream, Line),
     (Line == end_of_file -> Input = [];
      Input = [Line|Rest], read_stream_to_strings(InputStream, Rest)).
+
+take(N, List, Prefix):-
+    length(Prefix, N),
+    append(Prefix, _, List).
+
+drop(N, List, Suffix):-
+    length(List, L),
+    length(Suffix, S),
+    N is L - S,
+    append(_, Suffix, List).
