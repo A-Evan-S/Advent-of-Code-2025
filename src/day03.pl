@@ -1,4 +1,3 @@
-
 :- ['src/util.pl'].
 
 max_batteries(N, Batteries, Joltage):- max_batteries(N, Batteries, 0, Joltage).
