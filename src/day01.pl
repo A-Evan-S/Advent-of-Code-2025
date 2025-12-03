@@ -1,4 +1,4 @@
-:- ['src/parsing_util.pl'].
+:- ['src/util.pl'].
 
 parse_rotation(RotationString, Rotation):-
     string_chars(RotationString, Chars),

@@ -1,5 +1,5 @@
 
-:- ['src/parsing_util.pl'].
+:- ['src/util.pl'].
 
 max_batteries(0, _, 0).
 max_batteries(N, Batteries, Joltage):-
