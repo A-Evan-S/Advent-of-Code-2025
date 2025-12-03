@@ -6,11 +6,11 @@ max_batteries(N, Batteries, Acc, Joltage):-
     length(Batteries, L),
     FrontLength is L - N + 1,
     take(FrontLength, Batteries, Front),
-    max_list(Front, FrontDigit),
-    nth1(FrontDigitIndex, Front, FrontDigit),
-    drop(FrontDigitIndex, Batteries, Rest),
+    max_list(Front, MaxDigit),
+    nth1(MaxIndex, Front, MaxDigit),
+    drop(MaxIndex, Batteries, Rest),
     succ(N1, N),
-    Acc1 is Acc + 10 ^ N1 * FrontDigit,
+    Acc1 is Acc + 10 ^ N1 * MaxDigit,
     max_batteries(N1, Rest, Acc1, Joltage).
 
 string_to_digits(String, Digits):-
