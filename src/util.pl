@@ -17,3 +17,7 @@ drop(N, List, Suffix):-
     length(Suffix, S),
     N is L - S,
     append(_, Suffix, List).
+
+count(Pred, List, Count):-
+    include(Pred, List, Valid),
+    length(Valid, Count).
