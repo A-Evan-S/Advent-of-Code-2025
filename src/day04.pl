@@ -5,8 +5,7 @@ contains_paper(Grid, 0, Position):-
     Position = (RowIndex, ColIndex),
     nth0(RowIndex, Grid, Row),
     string_chars(Row, RowChars),
-    nth0(ColIndex, RowChars, Char),
-    Char = '@'.
+    nth0(ColIndex, RowChars, '@').
 
 contains_paper(Grid, Step, Position):-
     succ(Step1, Step),
