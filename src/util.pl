@@ -8,6 +8,10 @@ read_stream_to_strings(InputStream, Input):-
     (Line == end_of_file -> Input = [];
      Input = [Line|Rest], read_stream_to_strings(InputStream, Rest)).
 
+read_file_to_chars(Filename, InputChars):-
+    read_file_to_string(Filename, InputString, []),
+    string_chars(InputString, InputChars).
+
 take(N, List, Prefix):-
     length(Prefix, N),
     append(Prefix, _, List).
@@ -24,3 +28,8 @@ count(Pred, List, Count):-
 
 string_number(S, N):-
     number_string(N, S).
+
+number_dcg(N) --> digits(Digits), { number_chars(N, Digits) }.
+
+digits([D|Rest]) --> [D], { char_type(D, digit) }, digits(Rest).
+digits([D]) --> [D], { char_type(D, digit) }.

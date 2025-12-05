@@ -1,10 +1,43 @@
 :- ['src/util.pl'].
+:- initialization(main).
 
-parse_range(RangeString, [Start, End]):-
-    split_string(RangeString, "-", "", [A, B]),
-    number_string(Start, A),
-    number_string(End, B).
+main:-
+    parse_input('inputs/day05.txt', Ranges, IDs),
 
+    include(in_ranges(Ranges), IDs, FreshIDs),
+    length(FreshIDs, Result1),
+    write("Part 1: "), write(Result1), nl,
+
+    foldl(merge_range_rangelist, Ranges, [], MergedRanges),
+    maplist(range_size, MergedRanges, RangeSizes),
+    sumlist(RangeSizes, Result2),
+    write("Part 2: "), write(Result2), nl,
+    halt.
+
+% Parsing
+input(Ranges, IDs) -->
+    ranges(Ranges),
+    ['\n', '\n'],
+    ids(IDs).
+
+ranges([R|Rest]) --> range(R), ['\n'], ranges(Rest).
+ranges([R]) --> range(R).
+
+ids([ID|Rest]) --> id(ID), ['\n'], ids(Rest).
+ids([ID]) --> id(ID).
+
+range([Start, End]) -->
+    number_dcg(Start),
+    ['-'],
+    number_dcg(End).
+
+id(ID) --> number_dcg(ID).
+
+parse_input(Filename, Ranges, IDs):-
+    read_file_to_chars(Filename, InputChars),
+    phrase(input(Ranges, IDs), InputChars).
+
+% Solving
 in_ranges(Ranges, ID):-
     member([Start, End], Ranges),
     between(Start, End, ID).
@@ -22,22 +55,3 @@ merge_range_rangelist(Range, RangeList, Result):-
 
 range_size([A, B], RangeSize):-
     RangeSize is B - A + 1.
-
-main:-
-    Filename = 'inputs/day05.txt',
-    read_file_to_strings(Filename, Lines),
-    append(RangeStrings, [""|IDStrings], Lines),
-    maplist(parse_range, RangeStrings, Ranges),
-    maplist(string_number, IDStrings, IDs),
-
-    include(in_ranges(Ranges), IDs, FreshIDs),
-    length(FreshIDs, Result1),
-    write("Part 1: "), write(Result1), nl,
-
-    foldl(merge_range_rangelist, Ranges, [], MergedRanges),
-    maplist(range_size, MergedRanges, RangeSizes),
-    sumlist(RangeSizes, Result2),
-    write("Part 2: "), write(Result2), nl,
-    halt.
-
-:- initialization(main).
