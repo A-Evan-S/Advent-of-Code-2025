@@ -21,3 +21,6 @@ drop(N, List, Suffix):-
 count(Pred, List, Count):-
     include(Pred, List, Valid),
     length(Valid, Count).
+
+string_number(S, N):-
+    number_string(N, S).
