@@ -33,3 +33,26 @@ number_dcg(N) --> digits(Digits), { number_chars(N, Digits) }.
 
 digits([D|Rest]) --> [D], { char_type(D, digit) }, digits(Rest).
 digits([D]) --> [D], { char_type(D, digit) }.
+
+transpose([], []).
+transpose([L], R):-
+    maplist([X, V]>>(V = [X]), L, R).
+transpose([H|T], R):-
+    transpose(T, RecResult),
+    maplist([X,Y,Z]>>(Z = [X|Y]), H, RecResult, R).
+
+split_list(List, Delimiter, Result):-
+    split_list(List, Delimiter, [], Result).
+split_list([], _, Acc, [Acc]).
+split_list([Delimiter], Delimiter, Acc, [Acc, []]).
+split_list([Delimiter|T], Delimiter, Acc, Result):-
+    split_list(T, Delimiter, [], Result1),
+    Result = [Acc|Result1].
+split_list([H|T], Delimiter, Acc, Result):-
+    Acc1 = [H|Acc],
+    split_list(T, Delimiter, Acc1, Result).
+
+prod_list(List, Result):-
+    foldl([A,B,C]>>(C is A * B), List, 1, Result).
+
+reverse(F, A, B):- call(F, B, A).
