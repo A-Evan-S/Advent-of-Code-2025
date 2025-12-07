@@ -14,6 +14,18 @@ main:-
 
     halt.
 
+process_line([], State, State).
+process_line([Splitter|Rest], (Beams, Splits), (Beams1, Splits1)):-
+    member(Splitter, Beams),
+    process_line(Rest, (Beams, Splits), (RecBeams, RecSplits)),
+    delete(RecBeams, Splitter, X),
+    succ(L, Splitter),
+    succ(Splitter, R),
+    append(X, [L, R], Beams1),
+    succ(RecSplits, Splits1).
+process_line([_|Rest], State, ResultingState):-
+    process_line(Rest, State, ResultingState).
+
 process_line2([], State, State).
 process_line2([Splitter|Rest], Beams, ResBeams):-
     get_assoc(Splitter, Beams, Count),
@@ -29,18 +41,6 @@ process_line2([Splitter|Rest], Beams, ResBeams):-
     put_assoc(R, Beams2, RCountNew, ResBeams).
 process_line2([_|Rest], State, ResultingState):-
     process_line2(Rest, State, ResultingState).
-
-process_line([], State, State).
-process_line([Splitter|Rest], (Beams, Splits), (Beams1, Splits1)):-
-    member(Splitter, Beams),
-    process_line(Rest, (Beams, Splits), (RecBeams, RecSplits)),
-    delete(RecBeams, Splitter, X),
-    succ(L, Splitter),
-    succ(Splitter, R),
-    append(X, [L, R], Beams1),
-    succ(RecSplits, Splits1).
-process_line([_|Rest], State, ResultingState):-
-    process_line(Rest, State, ResultingState).
 
 % Parsing
 input(StartingColumn, Rows) -->
@@ -58,8 +58,7 @@ starting_column(StartingColumn, StartingColumn) -->
 
 rest_of_line --> ".", rest_of_line ; [].
 
-rows([Row]) -->
-    row(Row, 0).
+rows([Row]) --> row(Row, 0).
 rows([Row|Rest]) -->
     row(Row, 0),
     "\n",
