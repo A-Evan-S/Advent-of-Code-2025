@@ -3,33 +3,20 @@
 main:-
     phrase_from_file(input(StartingColumn, Rows), 'inputs/day07.txt'),
 
-    foldl(process_line, Rows, ([StartingColumn], 0), (_, Result1)),
-    write("Part 1: "), write(Result1), nl,
-
     list_to_assoc([StartingColumn-1], Beams),
-    foldl(process_line2, Rows, Beams, TotalBeams),
+    foldl(process_line, Rows, (Beams, 0), (TotalBeams, Result1)),
     assoc_to_values(TotalBeams, BeamCounts),
     sum_list(BeamCounts, Result2),
+
+    write("Part 1: "), write(Result1), nl,
     write("Part 2: "), write(Result2), nl,
 
     halt.
 
 process_line([], State, State).
-process_line([Splitter|Rest], (Beams, Splits), (Beams1, Splits1)):-
-    member(Splitter, Beams),
-    process_line(Rest, (Beams, Splits), (RecBeams, RecSplits)),
-    delete(RecBeams, Splitter, X),
-    succ(L, Splitter),
-    succ(Splitter, R),
-    append(X, [L, R], Beams1),
-    succ(RecSplits, Splits1).
-process_line([_|Rest], State, ResultingState):-
-    process_line(Rest, State, ResultingState).
-
-process_line2([], State, State).
-process_line2([Splitter|Rest], Beams, ResBeams):-
+process_line([Splitter|Rest], (Beams, Splits), (ResBeams, Splits1)):-
     get_assoc(Splitter, Beams, Count),
-    process_line2(Rest, Beams, RecBeams),
+    process_line(Rest, (Beams, Splits), (RecBeams, RecSplits)),
     succ(L, Splitter),
     succ(Splitter, R),
     (get_assoc(L, RecBeams, LCount) ; LCount = 0),
@@ -38,9 +25,10 @@ process_line2([Splitter|Rest], Beams, ResBeams):-
     LCountNew is LCount + Count,
     RCountNew is RCount + Count,
     put_assoc(L, Beams1, LCountNew, Beams2),
-    put_assoc(R, Beams2, RCountNew, ResBeams).
-process_line2([_|Rest], State, ResultingState):-
-    process_line2(Rest, State, ResultingState).
+    put_assoc(R, Beams2, RCountNew, ResBeams),
+    succ(RecSplits, Splits1).
+process_line([_|Rest], State, ResultingState):-
+    process_line(Rest, State, ResultingState).
 
 % Parsing
 input(StartingColumn, Rows) -->
