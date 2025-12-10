@@ -52,10 +52,3 @@ point_dcg(Point) -->
     ",",
     number_dcg_codes(Y),
     { Point = X-Y }.
-
-number_dcg_codes(N) -->
-    digits_codes(Digits),
-    { number_codes(N, Digits) }.
-
-digits_codes([D|Rest]) --> [D], { code_type(D, digit) }, digits_codes(Rest).
-digits_codes([D]) --> [D], { code_type(D, digit) }.

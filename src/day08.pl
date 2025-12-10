@@ -74,16 +74,9 @@ input([Point|Rest]) -->
 input([Point]) --> point_dcg(Point).
 
 point_dcg(Point) --> 
-    number_dcg_codes(X),
+    number_dcg(X),
     ",",
-    number_dcg_codes(Y),
+    number_dcg(Y),
     ",",
-    number_dcg_codes(Z),
+    number_dcg(Z),
     { make_point([x(X), y(Y), z(Z)], Point) }.
-
-number_dcg_codes(N) -->
-    digits_codes(Digits),
-    { number_codes(N, Digits) }.
-
-digits_codes([D|Rest]) --> [D], { code_type(D, digit) }, digits_codes(Rest).
-digits_codes([D]) --> [D], { code_type(D, digit) }.

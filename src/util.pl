@@ -29,11 +29,6 @@ count(Pred, List, Count):-
 string_number(S, N):-
     number_string(N, S).
 
-number_dcg(N) --> digits(Digits), { number_chars(N, Digits) }.
-
-digits([D|Rest]) --> [D], { char_type(D, digit) }, digits(Rest).
-digits([D]) --> [D], { char_type(D, digit) }.
-
 transpose([], []).
 transpose([L], R):-
     maplist([X, V]>>(V = [X]), L, R).
@@ -64,3 +59,10 @@ all(Pred, [H|T]):-
 
 any(Pred, [H|T]):-
     apply(Pred, [H]), ! ; any(Pred, T).
+
+number_dcg(N) -->
+    digits(Digits),
+    { number_codes(N, Digits) }.
+
+digits([D|Rest]) --> [D], { code_type(D, digit) }, digits(Rest).
+digits([D]) --> [D], { code_type(D, digit) }.
