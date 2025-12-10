@@ -56,3 +56,11 @@ prod_list(List, Result):-
     foldl([A,B,C]>>(C is A * B), List, 1, Result).
 
 reverse(F, A, B):- call(F, B, A).
+
+all(_, []).
+all(Pred, [H|T]):-
+    apply(Pred, [H]),
+    all(Pred, T).
+
+any(Pred, [H|T]):-
+    apply(Pred, [H]), ! ; any(Pred, T).
