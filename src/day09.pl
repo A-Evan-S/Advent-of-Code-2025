@@ -19,7 +19,6 @@ solve_2(Points, Result):-
     max_list(Areas, Result).
 
 valid_part_2_rect(LineSegs, (I1, I2, X1-Y1, X2-Y2)):-
-    write((I1, I2)), nl,
     sort([X1, X2], [MinX, MaxX]),
     sort([Y1, Y2], [MinY, MaxY]),
     all(no_intersects_rect(MinX, MaxX, MinY, MaxY), LineSegs).
@@ -48,7 +47,7 @@ input([Point|Rest]) -->
 input([Point]) --> point_dcg(Point).
 
 point_dcg(Point) --> 
-    number_dcg_codes(X),
+    number_dcg(X),
     ",",
-    number_dcg_codes(Y),
+    number_dcg(Y),
     { Point = X-Y }.
